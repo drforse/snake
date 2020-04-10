@@ -2,6 +2,7 @@ import turtle
 from .types import Snake, Food
 from .exceptions import *
 import typing
+import time
 
 
 class Game:
@@ -15,6 +16,7 @@ class Game:
         self.score_pen.speed(0)
         self.score_pen.goto(-400, 290)
         self.score_pen.clear()
+        self.delay = 0.3
         self.score_pen.write('Уровень:' + str(self.level), font=('Arial', 15, 'normal'))
         self.tracer_n = 1
         if resolution:
@@ -71,16 +73,29 @@ class Game:
                 continue
             if not self.snake:
                 continue
-            self.snake.forward(self.snake.head.shapesize()[0]+self.level)
+            self.snake.forward(20)
+            if self.delay > 0:
+                time.sleep(self.delay)
             for food in self.foods:
-                distance = self.level if self.level >= 15 else 15
+                distance = 20
                 if self.snake.distance(food) <= distance:
                     self.snake.eat(food)
                     self.new_food()
-                    if self.level > 3 and self.level % 3 == 0:
-                        self.tracer_n += 0.5
-                        self.window.tracer(n=self.tracer_n)
+                    self.delay -= 0.05
+                    if self.delay <= 0 and self.level % 3 == 0:
+                        self.tracer_n += 1
+                    self.window.tracer(n=self.tracer_n)
             for seg in self.snake.segments:
-                if self.snake.head.distance(seg) < 2:
+                if self.snake.head.distance(seg) < 10:
                     self.end()
                     break
+
+            pos = self.snake.head.pos()
+            if pos[0] >= self.window.screensize()[0]:
+                self.snake.goto(-self.window.screensize()[0], pos[1])
+            if pos[1] >= self.window.screensize()[1]:
+                self.snake.goto(pos[0], -self.window.screensize()[1])
+            if pos[0] <= - self.window.screensize()[0]:
+                self.snake.goto(self.window.screensize()[0], pos[1])
+            if pos[1] <= -self.window.screensize()[1]:
+                self.snake.goto(pos[0], self.window.screensize()[1])

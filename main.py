@@ -1,8 +1,7 @@
 from game import Game
 
 
-game = Game(resolution=(1000, 600), bgpic='game/images/background.gif')
-game.window.tracer(n=1)
+game = Game(resolution=(800, 600), bgpic='game/images/background.gif')
 game.start(pause=True)
 
 
