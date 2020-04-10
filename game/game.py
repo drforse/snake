@@ -14,7 +14,7 @@ class Game:
         self.window = turtle.Screen()
         self.score_pen = turtle.Turtle(visible=False)
         self.score_pen.speed(0)
-        self.score_pen.goto(-400, 290)
+        self.score_pen.goto(-350, 250)
         self.score_pen.clear()
         self.delay = 0.3
         self.score_pen.write('Уровень:' + str(self.level), font=('Arial', 15, 'normal'))
@@ -91,11 +91,12 @@ class Game:
                     break
 
             pos = self.snake.head.pos()
-            if pos[0] >= self.window.screensize()[0]:
-                self.snake.goto(-self.window.screensize()[0], pos[1])
-            if pos[1] >= self.window.screensize()[1]:
-                self.snake.goto(pos[0], -self.window.screensize()[1])
-            if pos[0] <= - self.window.screensize()[0]:
-                self.snake.goto(self.window.screensize()[0], pos[1])
-            if pos[1] <= -self.window.screensize()[1]:
-                self.snake.goto(pos[0], self.window.screensize()[1])
+            screensize = self.window.screensize()
+            if pos[0] >= screensize[0]:
+                self.snake.goto(-screensize[0], pos[1])
+            if pos[1] >= screensize[1]:
+                self.snake.goto(pos[0], -screensize[1])
+            if pos[0] <= - screensize[0]:
+                self.snake.goto(screensize[0], pos[1])
+            if pos[1] <= -screensize[1]:
+                self.snake.goto(pos[0], screensize[1])
